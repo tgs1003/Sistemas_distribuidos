@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<project name="ejercicio2" default="all" basedir=".">
+    
+    <!-- Definición de propiedades -->
+    <property name="src.dir" value="src"/>
+    <property name="build.dir" value="bin"/>
+    <property name="docs.dir" value="docs"/>
+    <property name="jar.dir" value="jar"/>
+    <property name="main-class" value="es.ubu.sd.practical.ejercicio1.App"/>
+
+    <!-- Limpiar el directorio de compilación -->
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete dir="${docs.dir}"/>
+        <delete dir="${jar.dir}"/>
+    </target>
+
+    <!-- Compilar el código fuente -->
+    <target name="compile" depends="clean">
+        <mkdir dir="${build.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false"/>
+    </target>
+
+    <!-- Generar documentación -->
+    <target name="docs" depends="compile">
+        <mkdir dir="${docs.dir}"/>
+        <javadoc sourcepath="${src.dir}" destdir="${docs.dir}"/>
+    </target>
+
+    <!-- Empaquetar en un archivo jar -->
+    <target name="jar" depends="compile">
+        <mkdir dir="${jar.dir}"/>
+        <jar destfile="${jar.dir}/ejercicio1.jar" basedir="${build.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${main-class}"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <!-- Compilar, generar documentación y empaquetar -->
+    <target name="all" depends="compile, docs, jar"/>
+
+</project>
