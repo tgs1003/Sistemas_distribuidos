@@ -124,7 +124,7 @@ public class ChatServerImpl implements ChatServer {
 	 * Elimina a un usuario del chat
 	 */
 	private void drop(int emisor, String usuario_a_eliminar) {
-		String msg = "El usuario " + usuario_a_eliminar + "no existe";
+		String msg = "El usuario " + usuario_a_eliminar + " no existe";
 		if(remove(usuario_a_eliminar))
 		{
 			msg = "El usuario " + usuario_a_eliminar + "ha sido desconectado";
@@ -216,6 +216,7 @@ public class ChatServerImpl implements ChatServer {
 		ServerThreadForClient cliente = null;
 		boolean resultado = false;
 		for (ServerThreadForClient client : usersList) {
+				System.out.println(client.getName());
 				if (client.getName() == userName) {
 					usersList.remove(cliente);
 					resultado = true;
@@ -244,7 +245,7 @@ public class ChatServerImpl implements ChatServer {
 	}
 
 	/**
-	 * Arranca el hilo principal de ejecucion del servidor
+	 * Arranca el hilo principal de ejecución del servidor
 	 * 
 	 * @param args argumentos pasados
 	 */
