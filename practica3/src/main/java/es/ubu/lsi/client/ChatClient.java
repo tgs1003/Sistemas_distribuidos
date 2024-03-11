@@ -16,7 +16,7 @@ public interface ChatClient {
 	/**
 	 * Inicializa el cliente
 	 * 
-	 * @return Devuelve si el cliente ha arrancado.
+	 * @return Devuelve si el cliente se ha iniciado correctamente.
 	 */
 	public boolean start();
 

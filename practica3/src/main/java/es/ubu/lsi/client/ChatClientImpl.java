@@ -168,7 +168,8 @@ public class ChatClientImpl implements ChatClient {
 			System.out.println("Los comandos disponibles son: \n");
 			System.out.println("    - LOGOUT ");
 			System.out.println("    - SHUTDOWN ");
-			System.out.println("    - DROP ");
+			System.out.println("    - BAN <Usuario>");
+			System.out.println("    - UNBAN <Usuario>");
 			System.out.println("________________________________________\n");
 
 			Scanner scan2 = new Scanner(System.in);
@@ -181,10 +182,6 @@ public class ChatClientImpl implements ChatClient {
 					carryOn = false;
 				} else if (message.equalsIgnoreCase("SHUTDOWN")) {
 					cliente.sendMessage(new ChatMessage(id, ChatMessage.MessageType.SHUTDOWN, ""));	
-				}
-				else if (message.toUpperCase().startsWith("DROP ")) {
-					String user = message.substring(5);
-					cliente.sendMessage(new ChatMessage(id, ChatMessage.MessageType.DROP, user));
 				}
 				else {
 					cliente.sendMessage(new ChatMessage(id, ChatMessage.MessageType.MESSAGE, message));

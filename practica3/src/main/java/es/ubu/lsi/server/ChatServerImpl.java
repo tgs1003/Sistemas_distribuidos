@@ -11,6 +11,8 @@ import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import es.ubu.lsi.common.ChatMessage;
 import es.ubu.lsi.common.ChatMessage.MessageType;
@@ -52,12 +54,16 @@ public class ChatServerImpl implements ChatServer {
 	 * Lista de usuarios conectados.
 	 */
 	private ArrayList<ServerThreadForClient> usersList;
+	
+	/**
+	 * Lista de usuarios conectados.
+	 */
+	private Map<Integer, ArrayList<String>> bannedUsers;
 
 	/**
 	 * Construye un servidor.
 	 * 
-	 * @param port
-	 *            puerto para establecer conexion
+	 * @param port puerto para establecer conexion
 	 */
 	public ChatServerImpl(int port) {
 		// Validar si el puerto esta disponible y sino poner por defecto
@@ -80,6 +86,7 @@ public class ChatServerImpl implements ChatServer {
 			serverSocket = new ServerSocket(port);
 			alive = true;
 			usersList = new ArrayList<ServerThreadForClient>();
+			bannedUsers = new HashMap<Integer, ArrayList<String>>();
 			sdf = new SimpleDateFormat("HH:mm:ss");
 			System.out.println("Servidor iniciado...");
 			System.out.println("________________________________________\n");
@@ -121,15 +128,63 @@ public class ChatServerImpl implements ChatServer {
 	}
 	
 	/**
-	 * Elimina a un usuario del chat
+	 * Banea a un usuario del chat
 	 */
-	private void drop(int emisor, String usuario_a_eliminar) {
-		String msg = "El usuario " + usuario_a_eliminar + " no existe";
-		if(remove(usuario_a_eliminar))
+	private void ban(int emisor, String usuario_a_banear) {
+		String msg = "El usuario " + usuario_a_banear + " ya está baneado.";
+		boolean baneado = false;
+		if(bannedUsers.containsKey(emisor))
 		{
-			msg = "El usuario " + usuario_a_eliminar + "ha sido desconectado";
+			ArrayList<String> banned = bannedUsers.get(emisor);
+			for (String user : banned)
+			{
+				if (user.equals(usuario_a_banear))
+					baneado = true;
+					break;
+			}
+			if(!baneado)
+			{
+				banned.add(usuario_a_banear);
+				msg = "El usuario " + usuario_a_banear + "ha sido baneado.";
+			}
 		}
+		else
+		{
+			ArrayList<String> banned = new ArrayList<String>();
+			banned.add(usuario_a_banear);
+			bannedUsers.put(emisor, banned);
+			msg = "El usuario " + usuario_a_banear + " ha sido baneado.";
+		}
+		
 		sendMessage(emisor, new ChatMessage(clientId, MessageType.MESSAGE, msg));
+	}
+	
+	/**
+	 * Desbanea a un usuario del chat
+	 */
+	private void unban(int emisor, String usuario_a_desbanear) {
+		 
+		String msg = "El usuario " + usuario_a_desbanear + " no está baneado.";
+		boolean baneado = false;
+		if(bannedUsers.containsKey(emisor))
+		{
+			System.out.println("Existe emisor: " + emisor);
+			ArrayList<String> banned = bannedUsers.get(emisor);
+			for (String user : banned)
+			{
+				if (user.equals(usuario_a_desbanear))
+					baneado = true;
+					break;
+			}
+			if(baneado)
+			{
+				banned.remove(usuario_a_desbanear);
+				msg = "El usuario " + usuario_a_desbanear + " ha sido desbaneado.";
+			}
+		}
+		
+		sendMessage(emisor, new ChatMessage(clientId, MessageType.MESSAGE, msg));
+		
 	}
 	
 	/**
@@ -192,10 +247,29 @@ public class ChatServerImpl implements ChatServer {
 		String msg = fecha + " " + emisor + ": " + message.getMessage();
 
 		System.out.println(msg);
-
+		
 		for (ServerThreadForClient client : usersList) {
 			try {
-				if (client.getClientId() != message.getId()) {
+				Boolean baneado = false;
+				for (Integer key : bannedUsers.keySet())
+				{
+					System.out.println("BannedKey: " + key);
+					System.out.println("ClientId: " + client.getClientId());
+				}
+				if(bannedUsers.containsKey(client.getClientId()))
+				{
+					System.out.println("Contains key");
+					ArrayList<String> baneados = bannedUsers.get(client.getClientId());
+				
+					for (String usuario : baneados) {
+						System.out.println(usuario);
+						if(usuario.equals(emisor)) {
+							baneado=true;
+						break;
+						}
+					}
+				}
+				if (client.getClientId() != message.getId() && !baneado) {
 					client.out.writeObject(msg);
 				}
 			} catch (IOException e) {
@@ -204,27 +278,6 @@ public class ChatServerImpl implements ChatServer {
 		}
 	}
 	
-	/**
-	 * Elimina a un cliente de la lista
-	 * 
-	 * @param userName El nombre del usuario a eliminar
-	 * 
-	 * @return Devuelve true si el usuario se ha podido desconectar.
-	 */
-	private boolean remove(String userName)
-	{
-		ServerThreadForClient cliente = null;
-		boolean resultado = false;
-		for (ServerThreadForClient client : usersList) {
-				System.out.println(client.getName());
-				if (client.getName() == userName) {
-					usersList.remove(cliente);
-					resultado = true;
-					break;
-				}
-		}
-		return resultado;
-	}
 	
 	/**
 	 * Elimina un cliente de la lista.
@@ -342,10 +395,19 @@ public class ChatServerImpl implements ChatServer {
 					remove(getClientId());
 					break;
 				case MESSAGE:
+					String message_text = message.getMessage();
+					if(message_text.startsWith("BAN "))
+					{
+						ban(message.getId(), message_text.split("BAN ")[1]);
+					}
+					else if (message_text.startsWith("UNBAN "))
+					{
+						unban(message.getId(), message_text.split("UNBAN ")[1]);
+					}
+					else
+					{
 						broadcast(message, getUsername());
-					break;
-				case DROP:
-						drop(getClientId(), message.getMessage());
+					}
 					break;
 				case SHUTDOWN:
 					shutdown();
