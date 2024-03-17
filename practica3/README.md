@@ -1,4 +1,5 @@
-El repositorio de git está en: https://github.com/tgs1003/Sistemas_distribuidos
+El repositorio de git está en: 
+https://github.com/tgs1003/Sistemas_distribuidos
 
 practica3 corresponde a la práctica obligatoria 1 Chat 1.0.
 
