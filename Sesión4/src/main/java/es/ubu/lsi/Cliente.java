@@ -26,6 +26,12 @@ public class Cliente {
 		String host = (args.length < 1) ? null : args[0];
 		try {
 		   Registry registry = LocateRegistry.getRegistry(host);
+		   //Listamos los objetos registrados
+		   System.out.println("Los objetos registrados son:");
+		   for (String name : registry.list())
+		   {
+			   System.out.println(name);
+		   }
 		   // Resuelve el objeto remoto (la referencia a...)
 	 	   HolaMundo stub = (HolaMundo) registry.lookup("Hola");
 	 	   String respuesta = stub.decirHola();
