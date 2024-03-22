@@ -4,7 +4,6 @@ import java.rmi.RemoteException;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
-import java.util.HexFormat;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -27,7 +26,7 @@ public class CifradoImpl implements Cifrado {
         Cipher cipher = Cipher.getInstance("AES");
         cipher.init(Cipher.ENCRYPT_MODE, aesKey);
         byte[] bytes = cipher.doFinal(texto.getBytes());
-        return HexFormat.of().formatHex(bytes);
+        return bytes.toString();
 	}
 	
 }
