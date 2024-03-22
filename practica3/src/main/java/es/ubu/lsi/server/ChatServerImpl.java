@@ -256,6 +256,7 @@ public class ChatServerImpl implements ChatServer {
 					System.out.println("BannedKey: " + key);
 					System.out.println("ClientId: " + client.getClientId());
 				}
+				//Comprobamos si el usuario está baneado.
 				if(bannedUsers.containsKey(client.getClientId()))
 				{
 					System.out.println("Contains key");
@@ -269,6 +270,7 @@ public class ChatServerImpl implements ChatServer {
 						}
 					}
 				}
+				//Si el usuario cliente tiene baneado al usuario que envía el mensaje no lo enviamos.
 				if (client.getClientId() != message.getId() && !baneado) {
 					client.out.writeObject(msg);
 				}
@@ -395,6 +397,9 @@ public class ChatServerImpl implements ChatServer {
 					remove(getClientId());
 					break;
 				case MESSAGE:
+					//Siguiendo el enunciado de la práctica, no he modificado el enumerado MessageType 
+					// para incluir los nuevos comandos, lo que hago es hacer una interpretación del mensaje
+					// y reenviar al comando correcpondiente.
 					String message_text = message.getMessage();
 					if(message_text.startsWith("BAN "))
 					{
