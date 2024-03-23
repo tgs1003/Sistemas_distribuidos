@@ -8,7 +8,7 @@ Repositorio de las prácticas de sistemas distribuidos, curso 2023-2024
 
 *practica2* corresponde a la práctica con sockets EchoSocket con Multihilo y blacklist.
 
-*practica3* corresponde a la práctica obligatoria 1 - Chat 1.0 - Entrega de control y seguimiento
+*practica_OB1* corresponde a la práctica obligatoria 1 - Chat 1.0
 
 *Sesión4* Contiene la sesión práctica 4 - RMI
 
