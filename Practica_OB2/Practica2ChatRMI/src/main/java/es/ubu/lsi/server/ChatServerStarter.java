@@ -7,8 +7,6 @@ import java.rmi.registry.Registry;
 import java.rmi.server.RMIClassLoader;
 import java.util.Properties;
 
-import com.sun.xml.internal.fastinfoset.stax.events.CharactersEvent;
-
 /**
  * Inicia el proceso de exportación del sel servidor remoto y su registro en
  * RMI.
@@ -37,7 +35,7 @@ public class ChatServerStarter {
 			// cargador de clases
 			Class<?> serverClass = RMIClassLoader.loadClass(url, "es.ubu.lsi.server.ChatServerImpl");
 			// inicia el cliente
-			Naming.rebind("/ChatServerImpl", (Remote) serverClass.newInstance());
+			Naming.rebind("/ChatServerImpl", (Remote) serverClass.getDeclaredConstructor().newInstance());
 			System.out.println("Servidor activo...");
 		} catch (Exception e) {
 			System.err.println("Excepcion en arranque del servidor " + e.toString());
