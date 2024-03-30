@@ -12,3 +12,4 @@ Repositorio de las prácticas de sistemas distribuidos, curso 2023-2024
 
 *Sesión4* Contiene la sesión práctica 4 - RMI
 
+*Practica_OB2* corresponde a la práctica obligatoria 3 - Chat RMI
