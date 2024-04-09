@@ -8,7 +8,7 @@ import java.rmi.server.RMIClassLoader;
 import java.util.Properties;
 
 /**
- * Inicia el proceso de exportación del sel servidor remoto y su registro en
+ * Inicia el proceso de exportación del servidor remoto y su registro en
  * RMI.
  * 
  * @author Teodoro Ricardo García Sánchez
