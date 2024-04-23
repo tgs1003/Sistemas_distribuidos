@@ -1,6 +1,8 @@
 El repositorio de git está en: 
 https://github.com/tgs1003/Sistemas_distribuidos
 
+Ejecutar el proyecto Practica2ChatRMI-Web en Glashfish
+
 Cambiar al directorio Practica2ChatRMI.
 
 Para ejecutar la práctica en windows:

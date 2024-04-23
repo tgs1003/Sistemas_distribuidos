@@ -71,16 +71,16 @@ public interface ChatServer extends Remote {
 	/**
 	 * Ban a user.
 	 * 
-	 * @param chatMessage
-	 *            chatMessage with the name of the user to ban
+	 * @param msg
+	 *            msg with the name of the user to ban
 	 */
 	public abstract void ban(ChatMessage msg) throws RemoteException;
 
 	/**
 	 * Unban a user.
 	 * 
-	 * @param chatMessage
-	 *            chatMessage with the name of the user to unban
+	 * @param msg
+	 *            msg with the name of the user to unban
 	 */
 	public abstract void unban(ChatMessage msg) throws RemoteException;
 }

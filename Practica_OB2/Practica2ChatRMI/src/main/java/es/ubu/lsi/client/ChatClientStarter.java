@@ -11,7 +11,6 @@ import java.util.Scanner;
 
 import es.ubu.lsi.common.ChatMessage;
 import es.ubu.lsi.server.ChatServer;
-import es.ubu.lsi.server.ChatServerImpl;
 
 /**
  * Inicializa un cliente, recibe la entradas de texto e invoca a los métodos del
