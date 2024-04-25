@@ -26,26 +26,30 @@
 	<build>
 		<plugins>
 			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<configuration>
-							<target>
-								<copy todir="../Practica2ChatRMI-Web/src/main/webapp">
-									<fileset dir="./target/classes">
-									</fileset>
-								</copy>
-
-							</target>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
+	            <artifactId>maven-resources-plugin</artifactId>
+	            <version>2.6</version>
+	            <executions>
+	                <execution>
+	                    <id>copy-resources</id>
+	                    <phase>process-classes</phase>
+	                    <goals>
+	                        <goal>copy-resources</goal>
+	                    </goals>
+	                    <configuration>
+	                        <outputDirectory>../Practica2ChatRMI-Web/src/main/webapp</outputDirectory>
+	                        <resources>
+	                            <resource>
+	                                <directory>./target/classes</directory>
+	                                <includes>
+	                                    <include>**/*.*</include>
+	                                </includes>
+	                            </resource>
+	                        </resources>
+	                    </configuration>
+	                </execution>
+	            </executions>
+        	</plugin>
+			
 			<plugin>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.6</version>
