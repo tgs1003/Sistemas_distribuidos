@@ -3,6 +3,9 @@ package es.ubu.lsi.server;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+
 import es.ubu.lsi.client.ChatClient;
 import es.ubu.lsi.common.ChatMessage;
 
@@ -35,7 +38,10 @@ public class ChatServerImpl extends UnicastRemoteObject implements ChatServer {
 	 */
 	private ArrayList<ChatClient> listaClientes;
 
-	
+	/**
+	 * Mapa para llevar la cuenta de los baneos;
+	 */
+	private HashMap<String, HashSet<String>> listaBaneos;
 
 	/**
 	 * Contruye un servidor
@@ -46,7 +52,7 @@ public class ChatServerImpl extends UnicastRemoteObject implements ChatServer {
 	public ChatServerImpl() throws RemoteException {
 		super();
 		listaClientes = new ArrayList<ChatClient>();
-		
+		listaBaneos = new HashMap<String, HashSet<String>>();
 	}
 
 	/*
@@ -60,7 +66,11 @@ public class ChatServerImpl extends UnicastRemoteObject implements ChatServer {
 			id = clientesTotales++;
 			client.setId(id);
 			listaClientes.add(client);
-			
+			// Si el cliente se ha vuelto a conectar no cambiamos los baneos que
+			// tenia configurados
+			if (!listaBaneos.containsKey(client.getNickName().toLowerCase())) {
+				listaBaneos.put(client.getNickName().toLowerCase(), new HashSet<String>());
+			}
 			publish(new ChatMessage(-1, SERVER_NAME, client.getNickName() + " se ha conectado."));
 		}
 		return id;
@@ -131,7 +141,12 @@ public class ChatServerImpl extends UnicastRemoteObject implements ChatServer {
 		// Gestionar el mensaje
 		for (ChatClient client : listaClientes) {
 			// Si el id es distinto lo mandamos
-			
+			if (client.getId() != msg.getId()) {
+				// Si el usuario no está baneado por alguno lo mandamos
+				if (!checkIsBanned(client.getNickName(), msg.getNickname())) {
+					client.receive(msg);
+				}
+			}
 		}
 	}
 
@@ -151,42 +166,55 @@ public class ChatServerImpl extends UnicastRemoteObject implements ChatServer {
 	}
 
 	/**
-	 * Elimina a un usuario.
+	 * Banea un usuario.
 	 * 
-	 * @param client_id
-	 *            	cliente que manda el mensaje
-	 * @param client_to_drop
-	 * 				cliente a eliminar
-	 * @throws RemoteException remote error
+	 * @param msg
+	 *            mensaje con los datos del usuario a banear
 	 */
-	public void drop(int client_id, String client_to_drop) throws RemoteException {
-		ChatClient usuario_a_borrar = null;
-		for (ChatClient cliente : listaClientes) {
-			if (cliente.getNickName() == client_to_drop) {
-				usuario_a_borrar = cliente;
-				break;	
-			}
+	public void ban(ChatMessage msg) {
+		String userToBan = msg.getMessage().toLowerCase();
+		String userWhoBan = msg.getNickname().toLowerCase();
+
+		HashSet<String> baneados = listaBaneos.get(userWhoBan);
+		// Comunicamos los baneos al servidor
+		if (baneados.add(userToBan)) {
+			System.out.println(msg.getNickname() + " ha baneado a " + msg.getMessage() + ".");
+		} else {
+			System.out.println(msg.getNickname() + " ya había baneado a " + msg.getMessage() + ".");
 		}
-		ChatClient usuario_a_notificar = null;
-		for (ChatClient cliente : listaClientes) {
-			try {
-				if (cliente.getId() == client_id) {
-					usuario_a_notificar = cliente;
-					break;
-				}
-			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		if(usuario_a_borrar != null) {
-			listaClientes.remove(usuario_a_borrar);
-			usuario_a_notificar.receive(new ChatMessage(-1, SERVER_NAME, "El usuario " + client_to_drop + " ha sido desconectado."));
-		}
-		else
-		{
-			usuario_a_notificar.receive(new ChatMessage(-1, SERVER_NAME, "El usuario " + client_to_drop + " no existe."));
-		}
+		listaBaneos.put(userWhoBan, baneados);
 	}
 
+	/**
+	 * Desbanea un usuario.
+	 * 
+	 * @param msg
+	 *            mensaje con los datos del usuario a desbanear
+	 */
+	public void unban(ChatMessage msg) {
+		String userToUnban = msg.getMessage().toLowerCase();
+		String userWhoUnban = msg.getNickname().toLowerCase();
+
+		HashSet<String> baneados = listaBaneos.get(userWhoUnban);
+		if (baneados.remove(userToUnban)) {
+			System.out.println(msg.getNickname() + " ha desbaneado a " + msg.getMessage() + ".");
+		} else {
+			System.out.println(
+					msg.getNickname() + " no puede desbanear a " + msg.getMessage() + " porque no está baneado.");
+		}
+		listaBaneos.put(userWhoUnban, baneados);
+	}
+
+	/**
+	 * Comprueba si un usuario tiene baneado a otro.
+	 * 
+	 * @param user1
+	 *            usuario que igual a baneado al usuario2
+	 * @param user2
+	 *            usuario que igual tiene baneado el usuario1
+	 * @return
+	 */
+	private boolean checkIsBanned(String user1, String user2) {
+		return listaBaneos.get(user1.toLowerCase()).contains(user2);
+	}
 }
