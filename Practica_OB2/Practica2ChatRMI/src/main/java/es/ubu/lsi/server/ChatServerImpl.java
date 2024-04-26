@@ -3,9 +3,6 @@ package es.ubu.lsi.server;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-
 import es.ubu.lsi.client.ChatClient;
 import es.ubu.lsi.common.ChatMessage;
 
@@ -38,10 +35,7 @@ public class ChatServerImpl extends UnicastRemoteObject implements ChatServer {
 	 */
 	private ArrayList<ChatClient> listaClientes;
 
-	/**
-	 * Mapa para llevar la cuenta de los baneos;
-	 */
-	private HashMap<String, HashSet<String>> listaBaneos;
+	
 
 	/**
 	 * Contruye un servidor
@@ -52,7 +46,7 @@ public class ChatServerImpl extends UnicastRemoteObject implements ChatServer {
 	public ChatServerImpl() throws RemoteException {
 		super();
 		listaClientes = new ArrayList<ChatClient>();
-		listaBaneos = new HashMap<String, HashSet<String>>();
+		
 	}
 
 	/*
