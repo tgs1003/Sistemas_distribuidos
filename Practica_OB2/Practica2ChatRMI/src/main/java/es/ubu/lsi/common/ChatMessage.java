@@ -110,4 +110,3 @@ public class ChatMessage implements Serializable {
 		this.nickname = nickname;
 	}
 }
-

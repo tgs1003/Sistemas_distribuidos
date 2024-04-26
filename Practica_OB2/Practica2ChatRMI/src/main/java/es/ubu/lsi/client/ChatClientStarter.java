@@ -117,21 +117,14 @@ public class ChatClientStarter {
 				} finally {
 					sendMessages = false;
 				}
-			} else if (msg.toLowerCase().matches("^\\s*ban\\s+\\S+\\s*")) {
-				String userToBan = banManager(msg);
+			} else if (msg.toLowerCase().matches("^\\s*drop\\s+\\S+\\s*")) {
+				String userToBan = msg.split("\\s")[1];
 				try {
-					server.ban(new ChatMessage(client.getId(), client.getNickName(), userToBan));
+					server.drop(client.getId(), userToBan);
 				} catch (RemoteException e) {
 					System.err.println("Error al intentar banear usuario.");
 				}
-			} else if (msg.toLowerCase().matches("^\\s*unban\\s+\\S+\\s*")) {
-				String userToUnban = banManager(msg);
-				try {
-					server.unban(new ChatMessage(client.getId(), client.getNickName(), userToUnban));
-				} catch (RemoteException e) {
-					System.err.println("Error al intentar desbanear usuario.");
-				}
-			} else {
+			}  else {
 				try {
 					server.publish(new ChatMessage(client.getId(), client.getNickName(), msg));
 				} catch (RemoteException e) {

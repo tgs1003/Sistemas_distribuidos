@@ -14,73 +14,48 @@ import es.ubu.lsi.common.ChatMessage;
  *
  */
 public interface ChatServer extends Remote {
-
+	
 	/**
 	 * Registers a new client.
 	 * 
-	 * @param client
-	 *            client
+	 * @param client client
 	 * @return client id
-	 * @throws RemoteException
-	 *             remote error
+	 * @throws RemoteException remote error
 	 */
 	public abstract int checkIn(ChatClient client) throws RemoteException;
-
+	
+	
 	/**
 	 * Unregisters a new client.
 	 * 
-	 * @param client
-	 *            current client
-	 * @throws RemoteException
-	 *             remote error
+	 * @param client current client
+	 * @throws RemoteException remote error
 	 */
 	public abstract void logout(ChatClient client) throws RemoteException;
-
+	
+	
 	/**
-	 * Sends a private message to a user.
+	 * Publishes a received message.
 	 * 
-	 * @param tonickname
-	 *            string
-	 * @param msg
-	 *            message
-	 * @throws RemoteException
-	 *             remote error
-	 */
-	public abstract void privatemsg(String tonickname, ChatMessage msg) throws RemoteException;
-
-	/**
-	 * Publishs a received message.
-	 * 
-	 * @param msg
-	 *            message
-	 * @throws RemoteException
-	 *             remote error
+	 * @param msg message
+	 * @throws RemoteException remote error
 	 */
 	public abstract void publish(ChatMessage msg) throws RemoteException;
-
+	
+	/**
+	 * Removes s user.
+	 * 
+	 * @param client_id current client sending the message
+	 * @param client_to_drop client to be removed
+	 * @throws RemoteException remote error
+	 */
+	public abstract void drop(int client_id, String client_to_drop ) throws RemoteException;
+	
 	/**
 	 * Orders of shutdown server.
 	 * 
-	 * @param client
-	 *            current client sending the message
-	 * @throws RemoteException
-	 *             remote error
+	 * @param client current client sending the message
+	 * @throws RemoteException remote error
 	 */
 	public abstract void shutdown(ChatClient client) throws RemoteException;
-
-	/**
-	 * Ban a user.
-	 * 
-	 * @param msg
-	 *            msg with the name of the user to ban
-	 */
-	public abstract void ban(ChatMessage msg) throws RemoteException;
-
-	/**
-	 * Unban a user.
-	 * 
-	 * @param msg
-	 *            msg with the name of the user to unban
-	 */
-	public abstract void unban(ChatMessage msg) throws RemoteException;
 }
