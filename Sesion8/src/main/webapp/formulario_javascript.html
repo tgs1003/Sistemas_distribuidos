@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    	<meta charset="UTF-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Formulario JavaScript</title>
+        <script>
+        	function validarFormulario(){
+        		//Acceder a los campos del formulario
+        		var campo1 = document.getElementById("campo1").value;
+        		var campo2 = document.getElementById("campo2").value;
+        		var campo3 = document.getElementById("campo3").value;
+        		
+        		//Comprobar si los campos están vacíos
+        		if(campo === "" || campo2 === "" || campo3 === ""){
+        			alert("Por favor, rellene todos los campos.");
+        			return false;
+        		}
+        		return true;
+        	}
+        </script>
+    </head>
+    <body>
+        <h1>Formulario Javascript</h1>
+        <form action="ServletEjemplo" method="post" onsubmit="return validarFormulario()">
+        	<label for="campo1">Campo 1:</label>
+        	<input type="text" id="campo1" name="campo1"><br><br>
+        	
+        	<label for="campo2">Campo 2:</label>
+        	<input type="text" id="campo2" name="campo2"><br><br>
+        	
+        	<label for="campo3">Campo 3:</label>
+        	<input type="text" id="campo3" name="campo3"><br><br>
+        	
+        	<input type="submit" value="Enviar"> 
+        </form>
+    </body>
+</html>
