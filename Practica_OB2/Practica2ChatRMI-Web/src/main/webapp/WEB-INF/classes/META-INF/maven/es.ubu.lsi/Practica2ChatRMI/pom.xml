@@ -26,35 +26,30 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-           	 	<artifactId>maven-compiler-plugin</artifactId>
-           	 	<version>3.7.0</version>
-           	 	<configuration>
-              	  	<source>1.8</source>
-               	 	<target>1.8</target>
-           	 	</configuration>
-        	</plugin>	
-			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<configuration>
-							<tasks>
-								<copy todir="../Practica2ChatRMI-Web/src/main/webapp">
-									<fileset dir="./target/classes">
-										<exclude name="**/*Dynamic.class" /> 
-									</fileset>
-								</copy>
-
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+	            <artifactId>maven-resources-plugin</artifactId>
+	            <version>2.6</version>
+	            <executions>
+	                <execution>
+	                    <id>copy-resources</id>
+	                    <phase>process-classes</phase>
+	                    <goals>
+	                        <goal>copy-resources</goal>
+	                    </goals>
+	                    <configuration>
+	                        <outputDirectory>../Practica2ChatRMI-Web/src/main/webapp/WEB-INF/classes</outputDirectory>
+	                        <resources>
+	                            <resource>
+	                                <directory>./target/classes</directory>
+	                                <includes>
+	                                    <include>**/*.*</include>
+	                                </includes>
+	                            </resource>
+	                        </resources>
+	                    </configuration>
+	                </execution>
+	            </executions>
+        	</plugin>
+			
 			<plugin>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.6</version>

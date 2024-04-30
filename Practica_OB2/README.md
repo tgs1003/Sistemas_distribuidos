@@ -1,9 +1,14 @@
 El repositorio de git está en: 
 https://github.com/tgs1003/Sistemas_distribuidos
 
-Cambiar al directorio Practica2ChatRMI.
+Abrimos Eclipse en el directorio Practica_OB2
 
-Para ejecutar la práctica en windows:
+Sobre el proyecto Practica2ChatRMI hacemos (con botón derecho) Run as/Maven Install
+Sobre el proyecto Practica2ChatRMI-Web hacemos (con botón derecho) Run as/Run on Server
+
+Elegimos el servidor Tomcat
+
+Ahora desde la línea comandos (por ese orden):
 
  - Ejecutar registro.bat
  - Ejecutar servidor.bat
@@ -11,11 +16,6 @@ Para ejecutar la práctica en windows:
  - Ejecutar cliente2.bat
  - Ejecutar cliente3.bat
 
-Para ejecutar la práctica en linux:
 
- - Ejecutar registro.sh
- - Ejecutar servidor.sh
- - Ejecutar cliente1.sh
- - Ejecutar cliente2.sh
- - Ejecutar cliente3.sh
+
 

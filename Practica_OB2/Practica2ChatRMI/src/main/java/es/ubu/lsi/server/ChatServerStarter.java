@@ -2,8 +2,6 @@ package es.ubu.lsi.server;
 
 import java.rmi.Naming;
 import java.rmi.Remote;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.rmi.server.RMIClassLoader;
 import java.util.Properties;
 
@@ -22,13 +20,6 @@ public class ChatServerStarter {
 			if (System.getSecurityManager() == null) {
 				System.setSecurityManager(new SecurityManager());
 			}
-			ChatServer server = new ChatServerImpl();
-
-			// registramos al servidor en el registro con el nombre de servidor
-			// Registry registry = LocateRegistry.getRegistry();
-			// registry.rebind("ChatServerImpl", server);
-			// System.out.println("Clase servidor lista");
-
 			Properties p = System.getProperties();
 			// lee el codebase
 			String url = p.getProperty("java.rmi.server.codebase");
