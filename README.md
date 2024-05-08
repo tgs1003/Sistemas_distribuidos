@@ -14,4 +14,4 @@ Repositorio de las prácticas de sistemas distribuidos, curso 2023-2024
 
 *Practica_OB2* corresponde a la práctica obligatoria 3 - Chat RMI
 
-*Sesion8* corresponde a la sesión práctica 8 - Validación en javascript
+*Sesion8* corresponde a la sesión práctica 8 - Validación en cliente
