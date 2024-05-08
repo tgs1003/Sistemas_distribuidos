@@ -67,7 +67,7 @@
 			</div>
 			<div id="divUsuario" class="divDerecha">
 				<p style="padding-top: 16;">Usuario:</p>
-				<input type="text" name="usuarioToBan"> <br> <input
+				<input type="text" name="usuario_a_banear"> <br> <input
 					type="radio" name="banAcction" value="banear">Bloquear<br>
 				<input type="radio" name="banAcction" value="desbanear">Desbloquear<br>
 				<br> <a href="logout.jsp" class="logout">Logout</a>

@@ -107,15 +107,15 @@ public class Chat{
 	 * @param usuario Usuario que desbanea
 	 * @param usuario_a_desbanear Usuario a desbanear
 	 */
-	public void desbanear(String usuario, String usuario_a_desbanear)
+	public void desbanear(String usuario, String usuario_a_banear)
 	{
 		HashSet<String> baneados_usuario = baneos.get(usuario);
 		List<String> mensajes_usuario = mensajes.get(usuario);
-		if(baneados_usuario.remove(usuario_a_desbanear)) {
-			mensajes_usuario.add("El usuario " + usuario_a_desbanear + "ha sido desbaneado.");
+		if(baneados_usuario.remove(usuario_a_banear)) {
+			mensajes_usuario.add("El usuario " + usuario_a_banear + "ha sido desbaneado.");
 			mensajes.put(usuario, mensajes_usuario);
 		} else {
-			mensajes_usuario.add("El usuario " + usuario_a_desbanear + "no estaba baneado.");
+			mensajes_usuario.add("El usuario " + usuario_a_banear + "no estaba baneado.");
 			mensajes.put(usuario, mensajes_usuario);
 		}
 	}
